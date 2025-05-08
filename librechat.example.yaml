@@ -173,6 +173,39 @@ endpoints:
   #   disableBuilder: false
   #   # (optional) Agent Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
   #   capabilities: ["execute_code", "file_search", "actions", "tools"]
+  azureOpenAI:
+    titleModel: "gpt-4-turbo"
+    plugins: true
+    groups:
+      - group: "my-westus" # arbitrary name
+        apiKey: "${WESTUS_API_KEY}"
+        instanceName: "actual-instance-name" # name of the resource group or instance
+        version: "2023-12-01-preview"
+        # baseURL: https://prod.example.com
+        # additionalHeaders:
+        #   X-Custom-Header: value
+        models:
+          gpt-4-vision-preview:
+            deploymentName: gpt-4-vision-preview
+            version: "2024-02-15-preview"
+          gpt-3.5-turbo:
+            deploymentName: gpt-35-turbo
+          gpt-3.5-turbo-1106:
+            deploymentName: gpt-35-turbo-1106
+          gpt-4:
+            deploymentName: gpt-4
+          gpt-4-1106-preview:
+            deploymentName: gpt-4-1106-preview
+      - group: "my-eastus"
+        apiKey: "${EASTUS_API_KEY}"
+        instanceName: "actual-eastus-instance-name"
+        deploymentName: gpt-4-turbo
+        version: "2024-02-15-preview"
+        baseURL: "https://gateway.ai.cloudflare.com/v1/cloudflareId/azure/azure-openai/${INSTANCE_NAME}/${DEPLOYMENT_NAME}" # uses env variables
+        additionalHeaders:
+          X-Custom-Header: value
+        models:
+          gpt-4-turbo: true
   custom:
     # Groq Example
     - name: 'groq'
@@ -223,6 +256,8 @@ endpoints:
       # Summary Model: Specify the model to use if summarization is enabled.
       # summaryModel: "mistral-tiny"  # Defaults to "gpt-3.5-turbo" if omitted.
 
+  
+  
       # Force Prompt setting: If true, sends a `prompt` parameter instead of `messages`.
       # forcePrompt: false
 
@@ -251,6 +286,23 @@ endpoints:
       # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
       dropParams: ['stop']
       modelDisplayLabel: 'OpenRouter'
+
+
+
+    - name: 'Ulysses-Assistant'
+      # For `apiKey` and `baseURL`, you can use environment variables that you define.
+      # recommended environment variables:
+      apiKey: 'qualquer_coisa_aqui'
+      baseURL: 'https://openrouter.ai/api/v1'
+      models:
+        default: ['meta-llama/llama-3-70b-instruct']
+        fetch: true
+      titleConvo: true
+      titleModel: 'meta-llama/llama-3-70b-instruct'
+      # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
+      dropParams: ['stop']
+      modelDisplayLabel: 'OpenRouter'
+
 
     # Portkey AI Example
     - name: "Portkey"
